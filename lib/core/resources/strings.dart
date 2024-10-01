@@ -22,4 +22,7 @@ class Strings {
   static const String connectionFailedCheckYourConnection =
       "Connection failed. Check your internet connection.";
   static const String failedToLoadCryptocurrencies = "Failed to load cryptocurrencies with status:";
+
+  static const String routeHome = "/";
+  static const String appTitle = "Cryptocurrencies";
 }
