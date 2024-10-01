@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:windmill_digital_poc/di/di.dart';
+
+import 'presentation/bloc/cryptocurrency_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  setupDependencies();
+  runApp(
+    BlocProvider(
+      create: (context) => getIt<CryptocurrencyBloc>(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
