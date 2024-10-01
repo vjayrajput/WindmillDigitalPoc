@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:windmill_digital_poc/core/errors/error_handler.dart';
 import 'package:windmill_digital_poc/domain/usecases/get_cryptocurrencies_use_case.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_event.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_state.dart';
@@ -20,9 +21,7 @@ class CryptocurrencyBloc
         }).toList();
         emit(CryptocurrencyLoaded(cryptocurrencies));
       } catch (error) {
-        emit(CryptocurrencyError(
-          message: error.toString(),
-        ));
+        emit(CryptocurrencyError(message: ErrorHandler.handleError(error)));
       }
     });
   }
