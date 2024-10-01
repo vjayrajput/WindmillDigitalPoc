@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/core/resources/styles.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
 
@@ -22,7 +23,10 @@ class CryptoListTile extends StatelessWidget {
             "(${crypto.symbol})",
             style: AppTextStyles.subtitleStyle,
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, Strings.routeDetails,
+                arguments: crypto);
+          },
         ),
       ),
     );

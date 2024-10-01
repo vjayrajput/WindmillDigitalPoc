@@ -48,7 +48,7 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
               child: Text(
                   "${Strings.failedToLoadCryptocurrencies} ${state.message}"));
         } else {
-          return const Center(child: Text(Strings.failedToLoadCryptocurrencies));
+          return const Center(child: Text(Strings.noData));
         }
       },
     );
