@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
+import 'package:windmill_digital_poc/core/resources/styles.dart';
 import 'package:windmill_digital_poc/di/di.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_bloc.dart';
 import 'package:windmill_digital_poc/presentation/pages/home_page.dart';
@@ -25,6 +26,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        cardTheme: AppThemes.cardTheme, // Apply the card theme globally
+        textTheme: TextTheme(
+          titleLarge: AppTextStyles.titleStyle,
+          titleMedium: AppTextStyles.subtitleStyle,
+        ),
       ),
       initialRoute: Strings.routeHome,
       routes: {
