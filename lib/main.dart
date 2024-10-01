@@ -4,6 +4,7 @@ import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/core/resources/styles.dart';
 import 'package:windmill_digital_poc/di/di.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_bloc.dart';
+import 'package:windmill_digital_poc/presentation/pages/cryptocurrency_detail_page.dart';
 import 'package:windmill_digital_poc/presentation/pages/home_page.dart';
 
 void main() {
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Strings.routeHome,
       routes: {
         Strings.routeHome: (context) => const HomePage(),
+        Strings.routeDetails: (context) => const CryptocurrencyDetailPage(),
       },
     );
   }
