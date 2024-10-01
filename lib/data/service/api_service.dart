@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:windmill_digital_poc/core/errors/error_handler.dart';
+import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 
 class ApiService {
@@ -10,22 +12,30 @@ class ApiService {
 
   Future<List<CryptocurrencyModel>> fetchCryptocurrencies(
       {required int start, required int limit}) async {
-    final response = await _dio.get(
-      apiUrl,
-      queryParameters: {'start': start, 'limit': limit},
-      options: Options(
-        headers: {
-          'X-CMC_PRO_API_KEY': apiKey,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = response.data['data'];
-      return data
-          .map((crypto) => CryptocurrencyModel.fromJson(crypto))
-          .toList();
-    } else {
-      throw Exception('Failed to load cryptocurrencies');
+    try {
+      final response = await _dio.get(
+        apiUrl,
+        queryParameters: {'start': start, 'limit': limit},
+        options: Options(
+          headers: {
+            'X-CMC_PRO_API_KEY': apiKey,
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'];
+        return data
+            .map((crypto) => CryptocurrencyModel.fromJson(crypto))
+            .toList();
+      } else {
+        throw Exception(
+            "${Strings.failedToLoadCryptocurrencies} ${response.statusCode}");
+      }
+    } on DioException catch (dioError) {
+      throw Exception(ErrorHandler.handleError(dioError));
+    } catch (e) {
+      throw Exception(ErrorHandler.handleError(e));
     }
   }
 }
