@@ -11,7 +11,7 @@ void main() {
   runApp(
     BlocProvider(
       create: (context) => getIt<CryptocurrencyBloc>(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -26,15 +26,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        cardTheme: AppThemes.cardTheme, // Apply the card theme globally
-        textTheme: TextTheme(
+        cardTheme: AppThemes.cardTheme,
+        textTheme: const TextTheme(
           titleLarge: AppTextStyles.titleStyle,
           titleMedium: AppTextStyles.subtitleStyle,
         ),
       ),
       initialRoute: Strings.routeHome,
       routes: {
-        Strings.routeHome: (context) => HomePage(),
+        Strings.routeHome: (context) => const HomePage(),
       },
     );
   }

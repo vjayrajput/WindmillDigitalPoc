@@ -25,4 +25,6 @@ class Strings {
 
   static const String routeHome = "/";
   static const String appTitle = "Cryptocurrencies";
+  static const String currentCryptocurrencies = "Current Cryptocurrencies";
+  static const String favorites = "Favorites";
 }
