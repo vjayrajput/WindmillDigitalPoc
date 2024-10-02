@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:windmill_digital_poc/data/datasource/cryptocurrency_data_source.dart';
+import 'package:windmill_digital_poc/data/datasource/cryptocurrency_data_source_impl.dart';
 import 'package:windmill_digital_poc/data/datasource/favorite_data_source.dart';
 import 'package:windmill_digital_poc/data/datasource/favorite_data_source_Impl.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
@@ -35,7 +36,7 @@ void setupDependencies() async {
 
   // Register Data Source
   getIt.registerLazySingleton<CryptocurrencyDataSource>(
-      () => CryptocurrencyDataSource(
+      () => CryptocurrencyDataSourceImpl(
             getIt<ApiService>(),
           ));
   getIt.registerFactory<FavoriteDataSource>(
