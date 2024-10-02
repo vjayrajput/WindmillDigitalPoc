@@ -32,8 +32,7 @@ class _CryptocurrencyDetailPageState extends State<CryptocurrencyDetailPage> {
 
       if (cryptocurrency != null) {
         final favoriteBloc = context.read<FavoriteCurrencyBloc>();
-        favoriteBloc.add(
-            CheckFavorite(cryptocurrency!.id)); // Check if it is a favorite
+        favoriteBloc.add(CheckFavorite(cryptocurrency!.id));
       }
     });
   }
@@ -47,6 +46,7 @@ class _CryptocurrencyDetailPageState extends State<CryptocurrencyDetailPage> {
               actions: [
                 BlocBuilder<FavoriteCurrencyBloc, FavoriteCurrencyState>(
                   builder: (context, state) {
+                    print("details state : $state");
                     bool isFavorite = false;
                     if (state is CurrencyIsFavorite) {
                       isFavorite = true;
@@ -55,7 +55,7 @@ class _CryptocurrencyDetailPageState extends State<CryptocurrencyDetailPage> {
                     }
 
                     return FavoriteButton(
-                      isFavorite: isFavorite,
+                      initialIsFavorite: isFavorite,
                       cryptocurrency: cryptocurrency!,
                     );
                   },

@@ -4,15 +4,30 @@ import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.da
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
 
-class FavoriteButton extends StatelessWidget {
-  final bool isFavorite;
+class FavoriteButton extends StatefulWidget {
+  final bool initialIsFavorite;
   final CryptocurrencyUiModel cryptocurrency;
 
   const FavoriteButton({
     super.key,
-    required this.isFavorite,
+    required this.initialIsFavorite,
     required this.cryptocurrency,
   });
+
+  @override
+  State<StatefulWidget> createState() {
+    return _FavoriteButtonState();
+  }
+}
+
+class _FavoriteButtonState extends State<FavoriteButton> {
+  late bool isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.initialIsFavorite;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +37,21 @@ class FavoriteButton extends StatelessWidget {
         color: isFavorite ? Colors.red : Colors.black,
       ),
       onPressed: () {
-        final favoriteBloc = context.read<FavoriteCurrencyBloc>();
-        if (isFavorite) {
-          favoriteBloc.add(RemoveFavorite(cryptocurrency.id));
-        } else {
-          favoriteBloc.add(AddFavorite(cryptocurrency));
+        setState(() {
+          isFavorite = !isFavorite;
+        });
+        try {
+          final favoriteBloc = BlocProvider.of<FavoriteCurrencyBloc>(context);
+          if (isFavorite) {
+            favoriteBloc.add(AddFavorite(widget.cryptocurrency));
+          } else {
+            favoriteBloc.add(RemoveFavorite(widget.cryptocurrency.id));
+          }
+        } catch (error) {
+          print("Error while updating favorite: $error");
+          setState(() {
+            isFavorite = !isFavorite;
+          });
         }
       },
     );

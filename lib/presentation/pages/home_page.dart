@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/presentation/pages/cryptocurrencies_page.dart';
+import 'package:windmill_digital_poc/presentation/pages/favorites_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,7 +29,7 @@ class HomePage extends StatelessWidget {
         body: const TabBarView(
           children: [
             CryptocurrenciesPage(),
-            CryptocurrenciesPage(),
+            FavoritesPage(),
           ],
         ),
       ),
