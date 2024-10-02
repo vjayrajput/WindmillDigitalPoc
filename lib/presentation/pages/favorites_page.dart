@@ -24,7 +24,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    context.read<FavoriteCurrencyBloc>().add(LoadFavorites());
+    _loadFavorites();
   }
 
   void _onScroll() {
@@ -32,23 +32,22 @@ class _FavoritesPageState extends State<FavoritesPage> {
         _scrollController.position.maxScrollExtent) {}
   }
 
+  Future<void> _loadFavorites({bool isRefresh = false}) async {
+    context.read<FavoriteCurrencyBloc>().add(LoadFavorites());
+  }
+
+  Future<void> _onRefresh() async {
+    await _loadFavorites(isRefresh: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteCurrencyBloc, FavoriteCurrencyState>(
       builder: (context, state) {
-        print("favorite State is : ${state}");
         if (state is FavoriteCurrencyLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is FavoriteCurrencyLoaded) {
-          print("favorite length is : ${state.favorites.length}");
-          if (state.favorites.isNotEmpty) {
-            return CryptoListView(
-              cryptocurrencies: state.favorites,
-              scrollController: _scrollController,
-            );
-          } else {
-            return const EmptyFavoritesView();
-          }
+          return _buildLoadedView(state);
         } else if (state is FavoriteCurrencyError) {
           return _buildErrorView(
             "${Strings.failedToLoadFavoriteCryptocurrencies} ${state.message}",
@@ -60,12 +59,24 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
+  Widget _buildLoadedView(FavoriteCurrencyLoaded state) {
+    if (state.favorites.isNotEmpty) {
+      return RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: CryptoListView(
+          cryptocurrencies: state.favorites,
+          scrollController: _scrollController,
+        ),
+      );
+    } else {
+      return const EmptyFavoritesView();
+    }
+  }
+
   Widget _buildErrorView(String message) {
     return ErrorView(
       message: message,
-      onRetry: () {
-        context.read<FavoriteCurrencyBloc>().add(LoadFavorites());
-      },
+      onRetry: () => _loadFavorites(),
     );
   }
 }
