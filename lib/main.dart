@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/core/resources/styles.dart';
 import 'package:windmill_digital_poc/di/di.dart';
@@ -10,6 +11,7 @@ import 'package:windmill_digital_poc/presentation/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await setupDependencies();
   runApp(
     MultiBlocProvider(
