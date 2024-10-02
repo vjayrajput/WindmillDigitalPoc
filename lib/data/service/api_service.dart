@@ -1,16 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 
 class ApiService {
-  final Dio _dio = Dio();
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: dotenv.env['API_URL'] ?? '',
+  ));
 
   final Box<CryptocurrencyModel> cryptocurrencyBox;
 
-  static const String apiUrl =
-      'https://pro-api.coinmarketcap.com/v1/cryptocurrency/map';
-  static const String apiKey = '2592e201-7cb0-41b4-81d5-abacc60ac4ee';
+  String secretKey = dotenv.env['SECRET_KEY'] ?? '';
 
   ApiService({required this.cryptocurrencyBox});
 
@@ -18,11 +19,11 @@ class ApiService {
       {required int start, required int limit}) async {
     try {
       final response = await _dio.get(
-        apiUrl,
+        "cryptocurrency/map",
         queryParameters: {'start': start, 'limit': limit},
         options: Options(
           headers: {
-            'X-CMC_PRO_API_KEY': apiKey,
+            'X-CMC_PRO_API_KEY': secretKey,
           },
         ),
       );
