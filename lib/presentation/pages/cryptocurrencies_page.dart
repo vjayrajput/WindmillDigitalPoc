@@ -18,7 +18,7 @@ class CryptocurrenciesPage extends StatefulWidget {
   }
 }
 
-class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
+class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> with AutomaticKeepAliveClientMixin{
   final _scrollController = ScrollController();
   int _page = 1;
   final int _limit = 20;
@@ -49,6 +49,7 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<CryptocurrencyBloc, CryptocurrencyState>(
       builder: (context, state) {
         if (state is CryptocurrencyLoading) {
@@ -100,4 +101,7 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
       onRetry: () => _loadCryptocurrencies(),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
