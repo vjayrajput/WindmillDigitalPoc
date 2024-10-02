@@ -15,7 +15,7 @@ class CryptocurrencyRepositoryImpl implements CryptocurrencyRepository {
       {required int start, required int limit}) async {
     try {
       final List<CryptocurrencyModel> data =
-          await dataSource.getCryptocurrencies(start: start, limit: limit);
+          await dataSource.fetchCryptocurrencies(start: start, limit: limit);
       return data.map((model) {
         return CryptocurrencyMapper.toEntity(model);
       }).toList();
