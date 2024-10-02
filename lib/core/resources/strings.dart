@@ -23,9 +23,12 @@ class Strings {
       "Connection failed. Check your internet connection.";
   static const String failedToLoadCryptocurrencies =
       "Failed to load cryptocurrencies with status:";
-  static const String failedToLoadFavoriteCryptocurrencies = "Failed to load favorite cryptocurrencies with status:";
-static const String hiveError = "Hive error occurred: ";
-static const String hiveUnknownError = "An unknown error occurred: ";
+  static const String failedToLoadFavoriteCryptocurrencies =
+      "Failed to load favorite cryptocurrencies with status:";
+  static const String failedUpdateFavorite =
+      "Failed to update favorites. Please try again.";
+  static const String hiveError = "Hive error occurred: ";
+  static const String hiveUnknownError = "An unknown error occurred: ";
 
   static const String routeHome = "/";
   static const String routeDetails = "/details";
@@ -33,6 +36,9 @@ static const String hiveUnknownError = "An unknown error occurred: ";
   static const String currentCryptocurrencies = "Current Cryptocurrencies";
   static const String favorites = "Favorites";
   static const String noData = "No data";
+  static const String noFavoritesYet = "No favorites yet!";
+  static const String startAddingYourItemHere =
+      "Start adding your favorite items here.";
 
   static const String cryptocurrencyId = "Cryptocurrency ID : ";
   static const String name = "Name : ";

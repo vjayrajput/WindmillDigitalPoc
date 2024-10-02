@@ -45,6 +45,7 @@ class FavoriteCurrencyBloc
         await addFavoriteUseCase(
             CryptocurrencyUiMapper.toEntity(event.currency));
         emit(CurrencyIsFavorite());
+        add(LoadFavorites());
       } catch (error) {
         print("favoriteBloc error 2 : ${error}");
         final errorMessage = ErrorHandler.handleHiveError(error);
@@ -58,6 +59,7 @@ class FavoriteCurrencyBloc
       try {
         await removeFavoriteUseCase(event.currencyId);
         emit(CurrencyIsNotFavorite());
+        add(LoadFavorites());
       } catch (error) {
         print("favoriteBloc error 3 : ${error}");
         final errorMessage = ErrorHandler.handleHiveError(error);
@@ -78,7 +80,6 @@ class FavoriteCurrencyBloc
         }
       } catch (error) {
         print("favoriteBloc error 4 : ${error}");
-        // Handle Hive or other errors
         final errorMessage = ErrorHandler.handleHiveError(error);
         print("Error while checking favorite: $errorMessage");
         emit(FavoriteCurrencyError(errorMessage));

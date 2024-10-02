@@ -39,10 +39,14 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
         if (state is CryptocurrencyLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is CryptocurrencyLoaded) {
-          return CryptoListView(
-            cryptocurrencies: state.cryptocurrencies,
-            scrollController: _scrollController,
-          );
+          if (state.cryptocurrencies.isNotEmpty) {
+            return CryptoListView(
+              cryptocurrencies: state.cryptocurrencies,
+              scrollController: _scrollController,
+            );
+          } else {
+            return const Center(child: Text(Strings.noData));
+          }
         } else if (state is CryptocurrencyError) {
           return Center(
               child: Text(
