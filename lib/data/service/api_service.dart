@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:windmill_digital_poc/core/errors/error_handler.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 
@@ -35,7 +34,7 @@ class ApiService {
         List<CryptocurrencyModel> cryptocurrencies =
             data.map((crypto) => CryptocurrencyModel.fromJson(crypto)).toList();
         for (var crypto in cryptocurrencies) {
-          await cryptocurrencyBox.put(crypto.id, crypto); // Store by ID
+          await cryptocurrencyBox.put(crypto.id, crypto);
         }
         return cryptocurrencies;
       } else {
@@ -44,10 +43,10 @@ class ApiService {
       }
     } on DioException catch (dioError) {
       print("apiService error 1 : ${dioError}");
-      throw Exception(ErrorHandler.handleError(dioError));
+      rethrow;
     } catch (e) {
       print("apiService error 2 : ${e.toString()}");
-      throw Exception(ErrorHandler.handleError(e));
+      rethrow;
     }
   }
 }

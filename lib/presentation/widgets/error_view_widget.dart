@@ -5,8 +5,7 @@ class ErrorView extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
 
-  const ErrorView(
-      {super.key, required this.message, required this.onRetry});
+  const ErrorView({super.key, required this.message, required this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class ErrorView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "${Strings.failedToLoadCryptocurrencies} $message",
+            "$message",
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),

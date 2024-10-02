@@ -27,6 +27,8 @@ class ErrorHandler {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
         return Strings.connectionTimeoutPleaseTryAgain;
+      case DioExceptionType.connectionError:
+        return Strings.connectionFailedCheckYourConnection;
       case DioExceptionType.sendTimeout:
         return Strings.sendTimeoutPleaseTryAgain;
       case DioExceptionType.receiveTimeout:
