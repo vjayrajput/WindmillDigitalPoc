@@ -3,10 +3,10 @@ import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/core/resources/styles.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
 
-class CryptocurrencyDetailsCard extends StatelessWidget {
+class CryptoDetailsCard extends StatelessWidget {
   final CryptocurrencyUiModel cryptocurrency;
 
-  const CryptocurrencyDetailsCard({super.key, required this.cryptocurrency});
+  const CryptoDetailsCard({super.key, required this.cryptocurrency});
 
   @override
   Widget build(BuildContext context) {
