@@ -12,14 +12,28 @@ class CryptocurrencyBloc
   CryptocurrencyBloc(this.getCryptocurrenciesUseCase)
       : super(CryptocurrencyInitial()) {
     on<LoadCryptocurrencies>((event, emit) async {
-      emit(CryptocurrencyLoading());
+      if (state is CryptocurrencyLoaded && event.page > 1) {
+        emit((state as CryptocurrencyLoaded).copyWith(isLoadingMore: true));
+      } else {
+        emit(CryptocurrencyLoading());
+      }
       try {
         final cryptocurrenciesEntities = await getCryptocurrenciesUseCase(
             start: event.page, limit: event.limit);
-        final cryptocurrencies = cryptocurrenciesEntities.map((entity) {
+        final newCryptocurrencies = cryptocurrenciesEntities.map((entity) {
           return CryptocurrencyUiMapper.toUiModel(entity);
         }).toList();
-        emit(CryptocurrencyLoaded(cryptocurrencies));
+
+        if (state is CryptocurrencyLoaded) {
+          final currentCryptocurrencies =
+              (state as CryptocurrencyLoaded).cryptocurrencies;
+          emit(CryptocurrencyLoaded(
+            cryptocurrencies: currentCryptocurrencies + newCryptocurrencies,
+            isLoadingMore: false,
+          ));
+        } else {
+          emit(CryptocurrencyLoaded(cryptocurrencies: newCryptocurrencies));
+        }
       } catch (error) {
         print("cryptoBloc error 1 : ${error}");
         emit(CryptocurrencyError(message: ErrorHandler.handleError(error)));
