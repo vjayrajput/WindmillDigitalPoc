@@ -5,39 +5,52 @@ import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_event.dart
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_state.dart';
 import 'package:windmill_digital_poc/presentation/models/mapper/cryptocurrency_ui_mapper.dart';
 
-class CryptocurrencyBloc
-    extends Bloc<CryptocurrencyEvent, CryptocurrencyState> {
+class CryptocurrencyBloc extends Bloc<CryptocurrencyEvent, CryptocurrencyState> {
   final GetCryptocurrenciesUseCase getCryptocurrenciesUseCase;
+  int _start = 1;
+  final int _limit = 20;
 
   CryptocurrencyBloc(this.getCryptocurrenciesUseCase)
       : super(CryptocurrencyInitial()) {
     on<LoadCryptocurrencies>((event, emit) async {
-      if (state is CryptocurrencyLoaded && event.page > 1) {
-        emit((state as CryptocurrencyLoaded).copyWith(isLoadingMore: true));
-      } else {
-        emit(CryptocurrencyLoading());
-      }
-      try {
-        final cryptocurrenciesEntities = await getCryptocurrenciesUseCase(
-            start: event.page, limit: event.limit);
-        final newCryptocurrencies = cryptocurrenciesEntities.map((entity) {
-          return CryptocurrencyUiMapper.toUiModel(entity);
-        }).toList();
+      await _loadCryptocurrencies(emit, resetStart: true);
+    });
 
-        if (state is CryptocurrencyLoaded) {
-          final currentCryptocurrencies =
-              (state as CryptocurrencyLoaded).cryptocurrencies;
-          emit(CryptocurrencyLoaded(
-            cryptocurrencies: currentCryptocurrencies + newCryptocurrencies,
-            isLoadingMore: false,
-          ));
-        } else {
-          emit(CryptocurrencyLoaded(cryptocurrencies: newCryptocurrencies));
-        }
-      } catch (error) {
-        print("cryptoBloc error 1 : ${error}");
-        emit(CryptocurrencyError(message: ErrorHandler.handleError(error)));
+    on<LoadMoreCryptocurrencies>((event, emit) async {
+      if (state is CryptocurrencyLoaded && !(state as CryptocurrencyLoaded).isLoadingMore) {
+        _start += _limit;
+        emit((state as CryptocurrencyLoaded).copyWith(isLoadingMore: true));
+        await _loadCryptocurrencies(emit);
       }
     });
   }
+
+  Future<void> _loadCryptocurrencies(Emitter<CryptocurrencyState> emit, {bool resetStart = false}) async {
+    if (resetStart) {
+      _start = 1;
+      emit(CryptocurrencyLoading());
+    }
+
+    try {
+      final cryptocurrenciesEntities = await getCryptocurrenciesUseCase(
+          start: _start, limit: _limit);
+      final newCryptocurrencies = cryptocurrenciesEntities.map((entity) {
+        return CryptocurrencyUiMapper.toUiModel(entity);
+      }).toList();
+
+      if (state is CryptocurrencyLoaded) {
+        final currentCryptocurrencies = (state as CryptocurrencyLoaded).cryptocurrencies;
+        emit(CryptocurrencyLoaded(
+          cryptocurrencies: currentCryptocurrencies + newCryptocurrencies,
+          isLoadingMore: false,
+        ));
+      } else {
+        emit(CryptocurrencyLoaded(cryptocurrencies: newCryptocurrencies));
+      }
+    } catch (error) {
+      print("cryptoBloc error: $error");
+      emit(CryptocurrencyError(message: ErrorHandler.handleError(error)));
+    }
+  }
 }
+
