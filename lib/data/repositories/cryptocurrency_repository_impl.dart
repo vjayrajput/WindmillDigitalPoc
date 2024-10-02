@@ -20,6 +20,7 @@ class CryptocurrencyRepositoryImpl implements CryptocurrencyRepository {
         return CryptocurrencyMapper.toEntity(model);
       }).toList();
     } catch (error) {
+      print("repositoryImpl error 1 : ${error}");
       throw Exception(ErrorHandler.handleError(error));
     }
   }
