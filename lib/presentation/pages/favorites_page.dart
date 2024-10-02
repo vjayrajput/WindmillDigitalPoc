@@ -17,7 +17,8 @@ class FavoritesPage extends StatefulWidget {
   }
 }
 
-class _FavoritesPageState extends State<FavoritesPage> {
+class _FavoritesPageState extends State<FavoritesPage>
+    with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
 
   @override
@@ -79,4 +80,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       onRetry: () => _loadFavorites(),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
