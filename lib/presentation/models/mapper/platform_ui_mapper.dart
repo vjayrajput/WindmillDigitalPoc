@@ -11,4 +11,14 @@ class PlatformUiMapper {
       tokenAddress: entity.tokenAddress,
     );
   }
+
+  static PlatformEntity toEntity(PlatformUiModel uiModel) {
+    return PlatformEntity(
+      id: uiModel.id,
+      name: uiModel.name,
+      symbol: uiModel.symbol,
+      slug: uiModel.slug,
+      tokenAddress: uiModel.tokenAddress,
+    );
+  }
 }

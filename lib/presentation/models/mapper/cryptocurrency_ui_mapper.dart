@@ -18,4 +18,20 @@ class CryptocurrencyUiMapper {
           : null,
     );
   }
+
+  static CryptocurrencyEntity toEntity(CryptocurrencyUiModel uiModel) {
+    return CryptocurrencyEntity(
+      id: uiModel.id,
+      name: uiModel.name,
+      symbol: uiModel.symbol,
+      slug: uiModel.slug,
+      rank: uiModel.rank,
+      isActive: uiModel.isActive,
+      firstHistoricalData: uiModel.firstHistoricalData,
+      lastHistoricalData: uiModel.lastHistoricalData,
+      platform: uiModel.platform != null
+          ? PlatformUiMapper.toEntity(uiModel.platform!)
+          : null,
+    );
+  }
 }

@@ -23,6 +23,9 @@ class Strings {
       "Connection failed. Check your internet connection.";
   static const String failedToLoadCryptocurrencies =
       "Failed to load cryptocurrencies with status:";
+  static const String failedToLoadFavoriteCryptocurrencies = "Failed to load favorite cryptocurrencies with status:";
+static const String hiveError = "Hive error occurred: ";
+static const String hiveUnknownError = "An unknown error occurred: ";
 
   static const String routeHome = "/";
   static const String routeDetails = "/details";
@@ -37,4 +40,5 @@ class Strings {
   static const String rank = "Rank : ";
   static const String firstHistoricalData = "First Historical Data : ";
   static const String lastHistoricalData = "Last Historical Data : ";
+  static const String loading = "Loading...";
 }

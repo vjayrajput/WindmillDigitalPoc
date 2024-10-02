@@ -1,5 +1,7 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 import 'package:windmill_digital_poc/core/errors/network_exception.dart';
 import 'package:windmill_digital_poc/core/errors/server_exception.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
@@ -37,6 +39,14 @@ class ErrorHandler {
         return Strings.connectionFailedCheckYourConnection;
       default:
         return Strings.anUnexpectedErrorOccurred;
+    }
+  }
+
+  static String handleHiveError(dynamic error) {
+    if (error is HiveError) {
+      return "${Strings.hiveError}${error.message}";
+    } else {
+      return "${Strings.hiveUnknownError}${error.toString()}";
     }
   }
 }

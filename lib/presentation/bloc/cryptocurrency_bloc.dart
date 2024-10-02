@@ -21,6 +21,7 @@ class CryptocurrencyBloc
         }).toList();
         emit(CryptocurrencyLoaded(cryptocurrencies));
       } catch (error) {
+        print("cryptoBloc error 1 : ${error}");
         emit(CryptocurrencyError(message: ErrorHandler.handleError(error)));
       }
     });
