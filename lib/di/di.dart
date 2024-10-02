@@ -46,10 +46,11 @@ Future<void> setupDependencies() async {
   );
 
   // Register Data Source
-  getIt.registerLazySingleton<CryptocurrencyDataSource>(
-      () => CryptocurrencyDataSourceImpl(
-            getIt<ApiService>(),
-          ));
+  getIt.registerLazySingleton<CryptocurrencyDataSource>(() =>
+      CryptocurrencyDataSourceImpl(
+          apiService: getIt<ApiService>(),
+          cryptocurrencyBox: getIt<Box<CryptocurrencyModel>>(
+              instanceName: 'cryptocurrenciesBox')));
   getIt.registerFactory<FavoriteDataSource>(
     () => FavoriteDataSourceImpl(
         favoriteBox:

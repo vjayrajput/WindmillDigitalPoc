@@ -1,4 +1,3 @@
-import 'package:windmill_digital_poc/core/errors/error_handler.dart';
 import 'package:windmill_digital_poc/data/datasource/cryptocurrency_data_source.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 import 'package:windmill_digital_poc/data/models/mapper/cryptocurrency_mapper.dart';
@@ -13,15 +12,10 @@ class CryptocurrencyRepositoryImpl implements CryptocurrencyRepository {
   @override
   Future<List<CryptocurrencyEntity>> fetchCryptocurrencies(
       {required int start, required int limit}) async {
-    try {
-      final List<CryptocurrencyModel> data =
-          await dataSource.fetchCryptocurrencies(start: start, limit: limit);
-      return data.map((model) {
-        return CryptocurrencyMapper.toEntity(model);
-      }).toList();
-    } catch (error) {
-      print("repositoryImpl error 1 : ${error}");
-      throw Exception(ErrorHandler.handleError(error));
-    }
+    final List<CryptocurrencyModel> data =
+        await dataSource.fetchCryptocurrencies(start: start, limit: limit);
+    return data.map((model) {
+      return CryptocurrencyMapper.toEntity(model);
+    }).toList();
   }
 }
