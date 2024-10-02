@@ -14,11 +14,25 @@ class CryptocurrencyLoading extends CryptocurrencyState {}
 
 class CryptocurrencyLoaded extends CryptocurrencyState {
   final List<CryptocurrencyUiModel> cryptocurrencies;
+  final bool isLoadingMore;
 
-  const CryptocurrencyLoaded(this.cryptocurrencies);
+  const CryptocurrencyLoaded({
+    required this.cryptocurrencies,
+    this.isLoadingMore = false,
+  });
+
+  CryptocurrencyLoaded copyWith({
+    List<CryptocurrencyUiModel>? cryptocurrencies,
+    bool? isLoadingMore = false,
+  }) {
+    return CryptocurrencyLoaded(
+      cryptocurrencies: cryptocurrencies ?? this.cryptocurrencies,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    );
+  }
 
   @override
-  List<Object?> get props => [cryptocurrencies];
+  List<Object?> get props => [cryptocurrencies, isLoadingMore];
 }
 
 class CryptocurrencyError extends CryptocurrencyState {

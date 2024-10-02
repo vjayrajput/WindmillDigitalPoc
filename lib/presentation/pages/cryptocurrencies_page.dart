@@ -5,6 +5,7 @@ import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_bloc.dart'
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_event.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_state.dart';
 import 'package:windmill_digital_poc/presentation/widgets/crypto_list_view_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/loading_indicator_widget.dart';
 
 class CryptocurrenciesPage extends StatefulWidget {
   const CryptocurrenciesPage({super.key});
@@ -17,6 +18,8 @@ class CryptocurrenciesPage extends StatefulWidget {
 
 class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
   final _scrollController = ScrollController();
+  int _page = 1;
+  final int _limit = 20;
 
   @override
   void initState() {
@@ -24,12 +27,17 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
     _scrollController.addListener(_onScroll);
     context
         .read<CryptocurrencyBloc>()
-        .add(const LoadCryptocurrencies(page: 1, limit: 20));
+        .add(LoadCryptocurrencies(page: _page, limit: _limit));
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {}
+        _scrollController.position.maxScrollExtent) {
+      _page++;
+      context
+          .read<CryptocurrencyBloc>()
+          .add(LoadCryptocurrencies(page: _page, limit: _limit));
+    }
   }
 
   @override
@@ -40,9 +48,14 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
           return const Center(child: CircularProgressIndicator());
         } else if (state is CryptocurrencyLoaded) {
           if (state.cryptocurrencies.isNotEmpty) {
-            return CryptoListView(
-              cryptocurrencies: state.cryptocurrencies,
-              scrollController: _scrollController,
+            return Stack(
+              children: [
+                CryptoListView(
+                  cryptocurrencies: state.cryptocurrencies,
+                  scrollController: _scrollController,
+                ),
+                if (state.isLoadingMore) const LoadingIndicator(),
+              ],
             );
           } else {
             return const Center(child: Text(Strings.noData));
