@@ -11,4 +11,14 @@ class PlatformMapper {
       tokenAddress: model.tokenAddress,
     );
   }
+
+  static PlatformModel toModel(PlatformEntity entity) {
+    return PlatformModel(
+      id: entity.id,
+      name: entity.name,
+      symbol: entity.symbol,
+      slug: entity.slug,
+      tokenAddress: entity.tokenAddress,
+    );
+  }
 }
