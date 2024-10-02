@@ -27,19 +27,24 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    context
-        .read<CryptocurrencyBloc>()
-        .add(LoadCryptocurrencies(page: _page, limit: _limit));
+    _loadCryptocurrencies();
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       _page++;
-      context
-          .read<CryptocurrencyBloc>()
-          .add(LoadCryptocurrencies(page: _page, limit: _limit));
+      _loadCryptocurrencies();
     }
+  }
+
+  Future<void> _loadCryptocurrencies({bool isRefresh = false}) async {
+    if (isRefresh) {
+      _page = 1;
+    }
+    context
+        .read<CryptocurrencyBloc>()
+        .add(LoadCryptocurrencies(page: _page, limit: _limit));
   }
 
   @override
@@ -64,9 +69,12 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
     if (state.cryptocurrencies.isNotEmpty) {
       return Stack(
         children: [
-          CryptoListView(
-            cryptocurrencies: state.cryptocurrencies,
-            scrollController: _scrollController,
+          RefreshIndicator(
+            onRefresh: () => _loadCryptocurrencies(isRefresh: true),
+            child: CryptoListView(
+              cryptocurrencies: state.cryptocurrencies,
+              scrollController: _scrollController,
+            ),
           ),
           if (state.isLoadingMore) const LoadingIndicator(),
         ],
@@ -89,11 +97,7 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> {
   Widget _buildErrorView(String message) {
     return ErrorView(
       message: message,
-      onRetry: () {
-        context
-            .read<CryptocurrencyBloc>()
-            .add(LoadCryptocurrencies(page: _page, limit: _limit));
-      },
+      onRetry: () => _loadCryptocurrencies(),
     );
   }
 }
