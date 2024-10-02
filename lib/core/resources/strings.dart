@@ -47,4 +47,8 @@ class Strings {
   static const String firstHistoricalData = "First Historical Data : ";
   static const String lastHistoricalData = "Last Historical Data : ";
   static const String loading = "Loading...";
+  static const String retry = "Retry";
+  static const String refresh = "Refresh";
+  static const String oopsNoDataAvailable = "Oops! No data available.";
+  static const String countNotFindCrypto = "It seems we couldn't find any cryptocurrencies at this moment.";
 }

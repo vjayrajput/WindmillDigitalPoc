@@ -6,6 +6,7 @@ import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.d
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_state.dart';
 import 'package:windmill_digital_poc/presentation/widgets/crypto_list_view_widget.dart';
 import 'package:windmill_digital_poc/presentation/widgets/empty_favorites_view_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/error_view_widget.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -49,12 +50,21 @@ class _FavoritesPageState extends State<FavoritesPage> {
             return const EmptyFavoritesView();
           }
         } else if (state is FavoriteCurrencyError) {
-          return Center(
-              child: Text(
-                  "${Strings.failedToLoadFavoriteCryptocurrencies} ${state.message}"));
+          return _buildErrorView(
+            "${Strings.failedToLoadFavoriteCryptocurrencies} ${state.message}",
+          );
         } else {
           return const EmptyFavoritesView();
         }
+      },
+    );
+  }
+
+  Widget _buildErrorView(String message) {
+    return ErrorView(
+      message: message,
+      onRetry: () {
+        context.read<FavoriteCurrencyBloc>().add(LoadFavorites());
       },
     );
   }
