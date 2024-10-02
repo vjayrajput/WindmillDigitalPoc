@@ -8,11 +8,12 @@ abstract class CryptocurrencyEvent extends Equatable {
 }
 
 class LoadCryptocurrencies extends CryptocurrencyEvent {
-  final int page;
-  final int limit;
-
-  const LoadCryptocurrencies({required this.page, required this.limit});
+  const LoadCryptocurrencies();
 
   @override
-  List<Object?> get props => [page, limit];
+  List<Object?> get props => [];
+}
+
+class LoadMoreCryptocurrencies extends CryptocurrencyEvent {
+  const LoadMoreCryptocurrencies();
 }

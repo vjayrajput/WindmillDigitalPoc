@@ -18,10 +18,9 @@ class CryptocurrenciesPage extends StatefulWidget {
   }
 }
 
-class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> with AutomaticKeepAliveClientMixin{
+class _CryptocurrenciesPageState extends State<CryptocurrenciesPage>
+    with AutomaticKeepAliveClientMixin {
   final _scrollController = ScrollController();
-  int _page = 1;
-  final int _limit = 20;
 
   @override
   void initState() {
@@ -33,18 +32,12 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> with Automa
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      _page++;
-      _loadCryptocurrencies();
+      context.read<CryptocurrencyBloc>().add(const LoadMoreCryptocurrencies());
     }
   }
 
-  Future<void> _loadCryptocurrencies({bool isRefresh = false}) async {
-    if (isRefresh) {
-      _page = 1;
-    }
-    context
-        .read<CryptocurrencyBloc>()
-        .add(LoadCryptocurrencies(page: _page, limit: _limit));
+  Future<void> _loadCryptocurrencies() async {
+    context.read<CryptocurrencyBloc>().add(const LoadCryptocurrencies());
   }
 
   @override
@@ -71,7 +64,7 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> with Automa
       return Stack(
         children: [
           RefreshIndicator(
-            onRefresh: () => _loadCryptocurrencies(isRefresh: true),
+            onRefresh: () => _loadCryptocurrencies(),
             child: CryptoListView(
               cryptocurrencies: state.cryptocurrencies,
               scrollController: _scrollController,
@@ -87,11 +80,7 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage> with Automa
 
   Widget _buildEmptyView() {
     return EmptyStateView(
-      onRefresh: () {
-        context.read<CryptocurrencyBloc>().add(
-              LoadCryptocurrencies(page: _page, limit: _limit),
-            );
-      },
+      onRefresh: () => _loadCryptocurrencies(),
     );
   }
 
