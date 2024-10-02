@@ -21,17 +21,28 @@ import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.da
 
 final getIt = GetIt.instance;
 
-void setupDependencies() async {
+Future<void> setupDependencies() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CryptocurrencyModelAdapter());
   Hive.registerAdapter(PlatformModelAdapter());
 
-// Register Api Service
-  getIt.registerLazySingleton<ApiService>(() => ApiService());
-
   // Register Hive Box
   getIt.registerSingletonAsync<Box<CryptocurrencyModel>>(
     () async => await Hive.openBox<CryptocurrencyModel>('favorites'),
+    instanceName: 'favoritesBox',
+  );
+  getIt.registerSingletonAsync<Box<CryptocurrencyModel>>(
+    () async => await Hive.openBox<CryptocurrencyModel>('cryptocurrencies'),
+    instanceName: 'cryptocurrenciesBox',
+  );
+
+  await getIt.allReady();
+
+  // Register Api Service
+  getIt.registerLazySingleton<ApiService>(
+    () => ApiService(
+        cryptocurrencyBox: getIt<Box<CryptocurrencyModel>>(
+            instanceName: 'cryptocurrenciesBox')),
   );
 
   // Register Data Source
@@ -40,7 +51,9 @@ void setupDependencies() async {
             getIt<ApiService>(),
           ));
   getIt.registerFactory<FavoriteDataSource>(
-    () => FavoriteDataSourceImpl(getIt<Box<CryptocurrencyModel>>()),
+    () => FavoriteDataSourceImpl(
+        favoriteBox:
+            getIt<Box<CryptocurrencyModel>>(instanceName: 'favoritesBox')),
   );
 
   // Register Repository
