@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
+import 'package:windmill_digital_poc/core/resources/styles.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_state.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
+import 'package:windmill_digital_poc/presentation/widgets/cryptocurrency_details_card_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/favorite_button_widget.dart';
 
 class CryptocurrencyDetailPage extends StatefulWidget {
   const CryptocurrencyDetailPage({super.key});
@@ -12,46 +19,56 @@ class CryptocurrencyDetailPage extends StatefulWidget {
 }
 
 class _CryptocurrencyDetailPageState extends State<CryptocurrencyDetailPage> {
-  bool isFavorite = false;
+  CryptocurrencyUiModel? cryptocurrency;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        cryptocurrency =
+            ModalRoute.of(context)!.settings.arguments as CryptocurrencyUiModel;
+      });
+
+      if (cryptocurrency != null) {
+        final favoriteBloc = context.read<FavoriteCurrencyBloc>();
+        favoriteBloc.add(
+            CheckFavorite(cryptocurrency!.id)); // Check if it is a favorite
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final CryptocurrencyUiModel cryptocurrency =
-        ModalRoute.of(context)!.settings.arguments as CryptocurrencyUiModel;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(cryptocurrency.name),
-        actions: [
-          IconButton(
-            icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? Colors.red : Colors.black,
+      appBar: cryptocurrency != null
+          ? AppBar(
+              title: Text(cryptocurrency!.name),
+              actions: [
+                BlocBuilder<FavoriteCurrencyBloc, FavoriteCurrencyState>(
+                  builder: (context, state) {
+                    bool isFavorite = false;
+                    if (state is CurrencyIsFavorite) {
+                      isFavorite = true;
+                    } else if (state is CurrencyIsNotFavorite) {
+                      isFavorite = false;
+                    }
+
+                    return FavoriteButton(
+                      isFavorite: isFavorite,
+                      cryptocurrency: cryptocurrency!,
+                    );
+                  },
+                ),
+              ],
+            )
+          : AppBar(title: const Text(Strings.loading)),
+      body: cryptocurrency == null
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: AppThemes.cardPadding,
+              child: CryptocurrencyDetailsCard(cryptocurrency: cryptocurrency!),
             ),
-            onPressed: () {
-              setState(() {
-                isFavorite = !isFavorite;
-              });
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("${Strings.cryptocurrencyId}${cryptocurrency.id}"),
-            Text("${Strings.name}${cryptocurrency.name}"),
-            Text("${Strings.symbol}${cryptocurrency.symbol}"),
-            Text("${Strings.rank}${cryptocurrency.rank}"),
-            Text(
-                "${Strings.firstHistoricalData}${cryptocurrency.firstHistoricalData}"),
-            Text(
-                "${Strings.lastHistoricalData}${cryptocurrency.lastHistoricalData}"),
-            // Add other fields as necessary
-          ],
-        ),
-      ),
     );
   }
 }
