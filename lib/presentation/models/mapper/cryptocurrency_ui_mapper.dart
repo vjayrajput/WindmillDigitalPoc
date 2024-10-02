@@ -10,11 +10,12 @@ class CryptocurrencyUiMapper {
       symbol: entity.symbol,
       slug: entity.slug,
       rank: entity.rank,
-      firstHistoricalData: entity.firstHistoricalData ?? "",
-      lastHistoricalData: entity.lastHistoricalData ?? "",
+      isActive: entity.isActive,
+      firstHistoricalData: entity.firstHistoricalData,
+      lastHistoricalData: entity.lastHistoricalData,
       platform: entity.platform != null
           ? PlatformUiMapper.toUiModel(entity.platform!)
-          : null, // Handle null platform properly
+          : null,
     );
   }
 }

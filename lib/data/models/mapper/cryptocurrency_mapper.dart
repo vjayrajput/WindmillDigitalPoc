@@ -10,11 +10,12 @@ class CryptocurrencyMapper {
       symbol: model.symbol,
       slug: model.slug,
       rank: model.rank,
+      isActive: model.isActive,
       firstHistoricalData: model.firstHistoricalData ?? "",
       lastHistoricalData: model.lastHistoricalData ?? "",
       platform: model.platform != null
           ? PlatformMapper.toEntity(model.platform!)
-          : null, // Handle null platform properly
+          : null,
     );
   }
 }

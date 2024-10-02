@@ -7,6 +7,7 @@ class CryptocurrencyEntity extends Equatable {
   final String symbol;
   final String slug;
   final int rank;
+  final int isActive;
   final String firstHistoricalData;
   final String lastHistoricalData;
   final PlatformEntity? platform;
@@ -17,6 +18,7 @@ class CryptocurrencyEntity extends Equatable {
     required this.symbol,
     required this.slug,
     required this.rank,
+    required this.isActive,
     required this.firstHistoricalData,
     required this.lastHistoricalData,
     required this.platform,
@@ -29,6 +31,7 @@ class CryptocurrencyEntity extends Equatable {
         symbol,
         slug,
         rank,
+        isActive,
         firstHistoricalData,
         lastHistoricalData,
       ];

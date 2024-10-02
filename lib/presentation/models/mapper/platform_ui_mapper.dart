@@ -4,10 +4,11 @@ import 'package:windmill_digital_poc/presentation/models/platform_ui_model.dart'
 class PlatformUiMapper {
   static PlatformUiModel toUiModel(PlatformEntity entity) {
     return PlatformUiModel(
-      id: entity.id ?? 0,
-      name: entity.name ?? "",
-      symbol: entity.symbol ?? "",
-      slug: entity.slug ?? "",
+      id: entity.id,
+      name: entity.name,
+      symbol: entity.symbol,
+      slug: entity.slug,
+      tokenAddress: entity.tokenAddress,
     );
   }
 }
