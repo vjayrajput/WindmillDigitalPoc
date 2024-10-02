@@ -6,7 +6,7 @@ import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.da
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.dart';
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_state.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
-import 'package:windmill_digital_poc/presentation/widgets/cryptocurrency_details_card_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/crypto_details_card_widget.dart';
 import 'package:windmill_digital_poc/presentation/widgets/favorite_button_widget.dart';
 
 class CryptocurrencyDetailPage extends StatefulWidget {
@@ -67,7 +67,7 @@ class _CryptocurrencyDetailPageState extends State<CryptocurrencyDetailPage> {
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: AppThemes.cardPadding,
-              child: CryptocurrencyDetailsCard(cryptocurrency: cryptocurrency!),
+              child: CryptoDetailsCard(cryptocurrency: cryptocurrency!),
             ),
     );
   }
