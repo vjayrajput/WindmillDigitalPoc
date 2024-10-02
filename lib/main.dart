@@ -10,7 +10,7 @@ import 'package:windmill_digital_poc/presentation/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupDependencies();
+  await setupDependencies();
   runApp(
     MultiBlocProvider(
       providers: [
