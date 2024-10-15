@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
-import 'package:windmill_digital_poc/core/resources/styles.dart';
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.dart';
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_state.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
-import 'package:windmill_digital_poc/presentation/widgets/crypto_details_card_widget.dart';
-import 'package:windmill_digital_poc/presentation/widgets/favorite_button_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/details/cryptocurrency_app_bar.dart';
+import 'package:windmill_digital_poc/presentation/widgets/details/cryptocurrency_detail_body.dart';
 
 class CryptocurrencyDetailPage extends StatefulWidget {
   const CryptocurrencyDetailPage({super.key});
@@ -41,34 +39,9 @@ class _CryptocurrencyDetailPageState extends State<CryptocurrencyDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: cryptocurrency != null
-          ? AppBar(
-              title: Text(cryptocurrency!.name),
-              actions: [
-                BlocBuilder<FavoriteCurrencyBloc, FavoriteCurrencyState>(
-                  builder: (context, state) {
-                    print("details state : $state");
-                    bool isFavorite = false;
-                    if (state is CurrencyIsFavorite) {
-                      isFavorite = true;
-                    } else if (state is CurrencyIsNotFavorite) {
-                      isFavorite = false;
-                    }
-
-                    return FavoriteButton(
-                      initialIsFavorite: isFavorite,
-                      cryptocurrency: cryptocurrency!,
-                    );
-                  },
-                ),
-              ],
-            )
+          ? CryptocurrencyAppBar(cryptocurrency: cryptocurrency!)
           : AppBar(title: const Text(Strings.loading)),
-      body: cryptocurrency == null
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: AppThemes.cardPadding,
-              child: CryptoDetailsCard(cryptocurrency: cryptocurrency!),
-            ),
+      body: CryptocurrencyDetailBody(cryptocurrency: cryptocurrency),
     );
   }
 }

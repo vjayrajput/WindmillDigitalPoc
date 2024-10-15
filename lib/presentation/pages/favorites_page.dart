@@ -4,9 +4,9 @@ import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.dart';
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.dart';
 import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_state.dart';
-import 'package:windmill_digital_poc/presentation/widgets/crypto_list_view_widget.dart';
-import 'package:windmill_digital_poc/presentation/widgets/empty_favorites_view_widget.dart';
-import 'package:windmill_digital_poc/presentation/widgets/error_view_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/favorite/empty_favorites_view_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/list/crypto_list_view_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/list/error_view_widget.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -43,41 +43,34 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return BlocBuilder<FavoriteCurrencyBloc, FavoriteCurrencyState>(
       builder: (context, state) {
         if (state is FavoriteCurrencyLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is FavoriteCurrencyLoaded) {
-          return _buildLoadedView(state);
+          if (state.favorites.isNotEmpty) {
+            return RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: CryptoListView(
+                cryptocurrencies: state.favorites,
+                scrollController: _scrollController,
+              ),
+            );
+          } else {
+            return const EmptyFavoritesView();
+          }
         } else if (state is FavoriteCurrencyError) {
-          return _buildErrorView(
-            "${Strings.failedToLoadFavoriteCryptocurrencies} ${state.message}",
+          return ErrorView(
+            message:
+                "${Strings.failedToLoadFavoriteCryptocurrencies} ${state.message}",
+            onRetry: () => _loadFavorites(),
           );
         } else {
           return const EmptyFavoritesView();
         }
       },
-    );
-  }
-
-  Widget _buildLoadedView(FavoriteCurrencyLoaded state) {
-    if (state.favorites.isNotEmpty) {
-      return RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: CryptoListView(
-          cryptocurrencies: state.favorites,
-          scrollController: _scrollController,
-        ),
-      );
-    } else {
-      return const EmptyFavoritesView();
-    }
-  }
-
-  Widget _buildErrorView(String message) {
-    return ErrorView(
-      message: message,
-      onRetry: () => _loadFavorites(),
     );
   }
 

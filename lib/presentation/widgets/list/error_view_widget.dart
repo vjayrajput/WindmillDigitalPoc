@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
+import 'package:windmill_digital_poc/presentation/widgets/action_button_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/message_text_widget.dart';
 
 class ErrorView extends StatelessWidget {
   final String message;
@@ -14,15 +16,9 @@ class ErrorView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            "$message",
-            textAlign: TextAlign.center,
-          ),
+          MessageText(message: message, textAlign: TextAlign.center),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: onRetry,
-            child: const Text(Strings.retry),
-          ),
+          ActionButton(label: Strings.retry, onAction: onRetry),
         ],
       ),
     );
