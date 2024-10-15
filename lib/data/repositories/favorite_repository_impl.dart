@@ -31,6 +31,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
     return localDataSource.isFavorite(currencyId);
   }
 
+  @override
   Stream<List<CryptocurrencyEntity>> watchFavorites() {
     return localDataSource.watchFavorites().map((models) {
       return models

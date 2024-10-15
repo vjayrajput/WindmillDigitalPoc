@@ -1,4 +1,3 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:windmill_digital_poc/domain/entities/cryptocurrency_entity.dart';
 
 abstract class FavoriteRepository {
