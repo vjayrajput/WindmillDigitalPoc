@@ -27,7 +27,7 @@ class ApiService {
           },
         ),
       );
-      print("apiService response : ${response}");
+      print("apiService response : $response");
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['data'];
 
@@ -43,7 +43,7 @@ class ApiService {
             "${Strings.failedToLoadCryptocurrencies} ${response.statusCode}");
       }
     } on DioException catch (dioError) {
-      print("apiService error 1 : ${dioError}");
+      print("apiService error 1 : $dioError");
       rethrow;
     } catch (e) {
       print("apiService error 2 : ${e.toString()}");

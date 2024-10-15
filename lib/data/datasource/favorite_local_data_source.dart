@@ -1,4 +1,3 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 
 abstract class FavoriteLocalDataSource {
