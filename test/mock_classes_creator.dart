@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:mockito/annotations.dart';
@@ -20,5 +21,6 @@ import 'package:windmill_digital_poc/domain/repositories/favorite_repository.dar
   CryptocurrencyLocalDataSource,
   CryptocurrencyRemoteDataSource,
   FavoriteLocalDataSource,
+  Connectivity,
 ])
 void main() {}

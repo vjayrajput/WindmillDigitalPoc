@@ -1,9 +1,14 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ConnectivityCheck {
+
+  final Connectivity connectivity;
+
+  // Constructor to inject the Connectivity dependency
+  ConnectivityCheck({required this.connectivity});
+
   Future<bool> checkConnectivity() async {
-    final List<ConnectivityResult> results =
-        await (Connectivity().checkConnectivity());
+    final List<ConnectivityResult> results = await connectivity.checkConnectivity();
 
     if (results.contains(ConnectivityResult.wifi)) {
       print("You are now connected to wifi");
