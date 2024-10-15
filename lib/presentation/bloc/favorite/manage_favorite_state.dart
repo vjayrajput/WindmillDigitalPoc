@@ -35,10 +35,6 @@ class LoadedFavoriteStatus extends ManageFavoriteState {
   List<Object?> get props => [currency, isFavorite];
 }
 
-class CurrencyIsFavorite extends ManageFavoriteState {}
-
-class CurrencyIsNotFavorite extends ManageFavoriteState {}
-
 class ManageFavoriteError extends ManageFavoriteState {
   final String message;
 
