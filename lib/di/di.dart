@@ -21,8 +21,10 @@ import 'package:windmill_digital_poc/domain/usecases/check_favorite_use_case.dar
 import 'package:windmill_digital_poc/domain/usecases/get_cryptocurrencies_use_case.dart';
 import 'package:windmill_digital_poc/domain/usecases/load_favorites_use_case.dart';
 import 'package:windmill_digital_poc/domain/usecases/remove_favorite_use_case.dart';
+import 'package:windmill_digital_poc/domain/usecases/watch_favorites_use_case.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_bloc.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/load_favorites_bloc.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/manage_favorite_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -98,6 +100,8 @@ Future<void> setupDependencies() async {
       () => LoadFavoritesUseCase(getIt<FavoriteRepository>()));
   getIt.registerLazySingleton<RemoveFavoriteUseCase>(
       () => RemoveFavoriteUseCase(getIt<FavoriteRepository>()));
+  getIt.registerLazySingleton<WatchFavoritesUseCase>(
+      () => WatchFavoritesUseCase(getIt<FavoriteRepository>()));
 
   // Register Blocs
   getIt.registerFactory(() => CryptocurrencyBloc(
