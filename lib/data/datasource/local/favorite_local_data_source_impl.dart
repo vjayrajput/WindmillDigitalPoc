@@ -26,4 +26,11 @@ class FavoriteLocalDataSourceImpl implements FavoriteLocalDataSource {
   Future<bool> isFavorite(int currencyId) async {
     return favoriteBox.containsKey(currencyId);
   }
+
+  @override
+  Stream<List<CryptocurrencyModel>> watchFavorites() {
+    return favoriteBox.watch().map((_) {
+      return favoriteBox.values.toList();
+    });
+  }
 }

@@ -30,4 +30,12 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
   Future<bool> isFavorite(int currencyId) {
     return localDataSource.isFavorite(currencyId);
   }
+
+  Stream<List<CryptocurrencyEntity>> watchFavorites() {
+    return localDataSource.watchFavorites().map((models) {
+      return models
+          .map((model) => CryptocurrencyMapper.toEntity(model))
+          .toList();
+    });
+  }
 }

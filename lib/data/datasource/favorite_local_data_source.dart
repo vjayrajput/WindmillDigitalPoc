@@ -1,3 +1,4 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 
 abstract class FavoriteLocalDataSource {
@@ -8,4 +9,6 @@ abstract class FavoriteLocalDataSource {
   Future<void> deleteFavorite(int currencyId);
 
   Future<bool> isFavorite(int currencyId);
+
+  Stream<List<CryptocurrencyModel>> watchFavorites();
 }
