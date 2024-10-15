@@ -27,7 +27,6 @@ class ApiService {
           },
         ),
       );
-      print("apiService response : $response");
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['data'];
 
