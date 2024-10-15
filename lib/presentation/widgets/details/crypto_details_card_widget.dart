@@ -20,26 +20,32 @@ class CryptoDetailsCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CryptoInfoRow(
+              key: const ValueKey('cryptoIdRow'),
               label: Strings.cryptocurrencyId,
               value: cryptocurrency.id.toString(),
             ),
             CryptoInfoRow(
+              key: const ValueKey('cryptoNameRow'),
               label: Strings.name,
               value: cryptocurrency.name,
             ),
             CryptoInfoRow(
+              key: const ValueKey('cryptoSymbolRow'),
               label: Strings.symbol,
               value: cryptocurrency.symbol,
             ),
             CryptoInfoRow(
+              key: const ValueKey('cryptoRankRow'),
               label: Strings.rank,
               value: cryptocurrency.rank.toString(),
             ),
             CryptoInfoRow(
+              key: const ValueKey('cryptoFirstHistoricalDataRow'),
               label: Strings.firstHistoricalData,
               value: cryptocurrency.firstHistoricalData,
             ),
             CryptoInfoRow(
+              key: const ValueKey('cryptoLastHistoricalDataRow'),
               label: Strings.lastHistoricalData,
               value: cryptocurrency.lastHistoricalData,
             ),

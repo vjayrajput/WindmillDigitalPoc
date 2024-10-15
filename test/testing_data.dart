@@ -23,7 +23,7 @@ var testPlatformModel2 = PlatformModel(
 
 var testCryptocurrencyModel1 = CryptocurrencyModel(
   id: 1,
-  rank: 1,
+  rank: 5,
   name: 'Bitcoin',
   symbol: "BTC",
   slug: "bitcoin",
@@ -35,7 +35,7 @@ var testCryptocurrencyModel1 = CryptocurrencyModel(
 
 var testCryptocurrencyModel2 = CryptocurrencyModel(
   id: 2,
-  rank: 2,
+  rank: 6,
   name: 'Ethereum',
   symbol: "USDT",
   slug: "ethereum",
@@ -47,7 +47,7 @@ var testCryptocurrencyModel2 = CryptocurrencyModel(
 
 var testCryptocurrencyModel3 = CryptocurrencyModel(
   id: 3,
-  rank: 3,
+  rank: 7,
   name: 'Novacoin',
   symbol: "NVC",
   slug: "novacoin",
@@ -75,7 +75,7 @@ const testPlatformEntity2 = PlatformEntity(
 
 const testCryptocurrencyEntity1 = CryptocurrencyEntity(
   id: 1,
-  rank: 1,
+  rank: 5,
   name: 'Bitcoin',
   symbol: "BTC",
   slug: "bitcoin",
@@ -87,7 +87,7 @@ const testCryptocurrencyEntity1 = CryptocurrencyEntity(
 
 const testCryptocurrencyEntity2 = CryptocurrencyEntity(
   id: 2,
-  rank: 2,
+  rank: 6,
   name: 'Ethereum',
   symbol: "USDT",
   slug: "ethereum",
@@ -115,7 +115,7 @@ const testPlatformUiModel2 = PlatformUiModel(
 
 const testCryptocurrencyUiModel1 = CryptocurrencyUiModel(
   id: 1,
-  rank: 1,
+  rank: 5,
   name: 'Bitcoin',
   symbol: "BTC",
   slug: "bitcoin",
@@ -127,7 +127,7 @@ const testCryptocurrencyUiModel1 = CryptocurrencyUiModel(
 
 const testCryptocurrencyUiModel2 = CryptocurrencyUiModel(
   id: 2,
-  rank: 2,
+  rank: 6,
   name: 'Ethereum',
   symbol: "USDT",
   slug: "ethereum",
