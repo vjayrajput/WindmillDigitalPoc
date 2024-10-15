@@ -1,11 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:windmill_digital_poc/data/datasource/favorite_data_source.dart';
+import 'package:windmill_digital_poc/data/datasource/favorite_local_data_source.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 
-class FavoriteDataSourceImpl implements FavoriteDataSource {
+class FavoriteLocalDataSourceImpl implements FavoriteLocalDataSource {
   final Box<CryptocurrencyModel> favoriteBox;
 
-  FavoriteDataSourceImpl({required this.favoriteBox});
+  FavoriteLocalDataSourceImpl({required this.favoriteBox});
 
   @override
   Future<List<CryptocurrencyModel>> getFavorites() async {
