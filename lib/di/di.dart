@@ -107,10 +107,13 @@ Future<void> setupDependencies() async {
   getIt.registerFactory(() => CryptocurrencyBloc(
         getIt<GetCryptocurrenciesUseCase>(),
       ));
-  getIt.registerFactory(() => FavoriteCurrencyBloc(
+  getIt.registerFactory(() => ManageFavoriteBloc(
         addFavoriteUseCase: getIt<AddFavoriteUseCase>(),
         checkFavoriteUseCase: getIt<CheckFavoriteUseCase>(),
-        loadFavoritesUseCase: getIt<LoadFavoritesUseCase>(),
         removeFavoriteUseCase: getIt<RemoveFavoriteUseCase>(),
+      ));
+  getIt.registerFactory(() => LoadFavoritesBloc(
+        loadFavoritesUseCase: getIt<LoadFavoritesUseCase>(),
+        watchFavoritesUseCase: getIt<WatchFavoritesUseCase>(),
       ));
 }

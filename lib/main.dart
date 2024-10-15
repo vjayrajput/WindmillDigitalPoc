@@ -5,7 +5,8 @@ import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/core/resources/styles.dart';
 import 'package:windmill_digital_poc/di/di.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_bloc.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/load_favorites_bloc.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/manage_favorite_bloc.dart';
 import 'package:windmill_digital_poc/presentation/pages/cryptocurrency_detail_page.dart';
 import 'package:windmill_digital_poc/presentation/pages/home_page.dart';
 
@@ -20,7 +21,10 @@ void main() async {
           create: (context) => getIt<CryptocurrencyBloc>(),
         ),
         BlocProvider(
-          create: (context) => getIt<FavoriteCurrencyBloc>(),
+          create: (context) => getIt<ManageFavoriteBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<LoadFavoritesBloc>(),
         ),
       ],
       child: const MyApp(),

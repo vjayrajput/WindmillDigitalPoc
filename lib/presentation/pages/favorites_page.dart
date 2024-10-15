@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_state.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/load_favorites_bloc.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/load_favorites_event.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/load_favorites_state.dart';
 import 'package:windmill_digital_poc/presentation/widgets/favorite/empty_favorites_view_widget.dart';
 import 'package:windmill_digital_poc/presentation/widgets/list/crypto_list_view_widget.dart';
 import 'package:windmill_digital_poc/presentation/widgets/list/error_view_widget.dart';
@@ -26,6 +26,7 @@ class _FavoritesPageState extends State<FavoritesPage>
     super.initState();
     _scrollController.addListener(_onScroll);
     _loadFavorites();
+    _watchFavorites();
   }
 
   void _onScroll() {
@@ -34,7 +35,12 @@ class _FavoritesPageState extends State<FavoritesPage>
   }
 
   Future<void> _loadFavorites({bool isRefresh = false}) async {
-    context.read<FavoriteCurrencyBloc>().add(LoadFavorites());
+    context.read<LoadFavoritesBloc>().add(LoadFavorites());
+  }
+
+  void _watchFavorites() {
+    // Start listening to the WatchFavoritesBloc for updates from Hive box
+    context.read<LoadFavoritesBloc>().add(WatchFavorites());
   }
 
   Future<void> _onRefresh() async {
@@ -44,12 +50,12 @@ class _FavoritesPageState extends State<FavoritesPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    return BlocBuilder<FavoriteCurrencyBloc, FavoriteCurrencyState>(
+    return BlocBuilder<LoadFavoritesBloc, LoadFavoritesState>(
       builder: (context, state) {
-        if (state is FavoriteCurrencyLoading) {
+        print("builder state : $state");
+        if (state is LoadFavoritesLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state is FavoriteCurrencyLoaded) {
+        } else if (state is LoadFavoritesLoaded) {
           if (state.favorites.isNotEmpty) {
             return RefreshIndicator(
               onRefresh: _onRefresh,
@@ -61,7 +67,7 @@ class _FavoritesPageState extends State<FavoritesPage>
           } else {
             return const EmptyFavoritesView();
           }
-        } else if (state is FavoriteCurrencyError) {
+        } else if (state is LoadFavoritesError) {
           return ErrorView(
             message:
                 "${Strings.failedToLoadFavoriteCryptocurrencies} ${state.message}",
