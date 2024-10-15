@@ -1,16 +1,16 @@
-import 'package:windmill_digital_poc/data/datasource/favorite_data_source.dart';
+import 'package:windmill_digital_poc/data/datasource/favorite_local_data_source.dart';
 import 'package:windmill_digital_poc/data/models/mapper/cryptocurrency_mapper.dart';
 import 'package:windmill_digital_poc/domain/entities/cryptocurrency_entity.dart';
 import 'package:windmill_digital_poc/domain/repositories/favorite_repository.dart';
 
 class FavoriteRepositoryImpl implements FavoriteRepository {
-  final FavoriteDataSource dataSource;
+  final FavoriteLocalDataSource localDataSource;
 
-  FavoriteRepositoryImpl(this.dataSource);
+  FavoriteRepositoryImpl(this.localDataSource);
 
   @override
   Future<List<CryptocurrencyEntity>> loadFavorites() async {
-    final favorites = await dataSource.getFavorites();
+    final favorites = await localDataSource.getFavorites();
     return favorites
         .map((model) => CryptocurrencyMapper.toEntity(model))
         .toList();
@@ -18,16 +18,16 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
 
   @override
   Future<void> addFavorite(CryptocurrencyEntity currency) {
-    return dataSource.saveFavorite(CryptocurrencyMapper.toModel(currency));
+    return localDataSource.saveFavorite(CryptocurrencyMapper.toModel(currency));
   }
 
   @override
   Future<void> removeFavorite(int currencyId) {
-    return dataSource.deleteFavorite(currencyId);
+    return localDataSource.deleteFavorite(currencyId);
   }
 
   @override
   Future<bool> isFavorite(int currencyId) {
-    return dataSource.isFavorite(currencyId);
+    return localDataSource.isFavorite(currencyId);
   }
 }

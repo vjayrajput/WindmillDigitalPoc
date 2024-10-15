@@ -3,10 +3,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:windmill_digital_poc/core/util/connectivity_check.dart';
-import 'package:windmill_digital_poc/data/datasource/cryptocurrency_data_source.dart';
-import 'package:windmill_digital_poc/data/datasource/cryptocurrency_data_source_impl.dart';
-import 'package:windmill_digital_poc/data/datasource/favorite_data_source.dart';
-import 'package:windmill_digital_poc/data/datasource/favorite_data_source_Impl.dart';
+import 'package:windmill_digital_poc/data/datasource/cryptocurrency_local_data_source.dart';
+import 'package:windmill_digital_poc/data/datasource/cryptocurrency_remote_data_source.dart';
+import 'package:windmill_digital_poc/data/datasource/favorite_local_data_source.dart';
+import 'package:windmill_digital_poc/data/datasource/local/cryptocurrency_local_data_source_impl.dart';
+import 'package:windmill_digital_poc/data/datasource/local/favorite_local_data_source_impl.dart';
+import 'package:windmill_digital_poc/data/datasource/remote/cryptocurrency_remote_data_source_impl.dart';
 import 'package:windmill_digital_poc/data/models/cryptocurrency_model.dart';
 import 'package:windmill_digital_poc/data/models/platform_model.dart';
 import 'package:windmill_digital_poc/data/repositories/cryptocurrency_repository_impl.dart';
@@ -57,25 +59,30 @@ Future<void> setupDependencies() async {
       ));
 
   // Register Data Source
-  getIt.registerLazySingleton<CryptocurrencyDataSource>(() =>
-      CryptocurrencyDataSourceImpl(
-          apiService: getIt<ApiService>(),
-          connectivityCheck: getIt<ConnectivityCheck>(),
-          cryptocurrencyBox: getIt<Box<CryptocurrencyModel>>(
-              instanceName: 'cryptocurrenciesBox')));
-  getIt.registerFactory<FavoriteDataSource>(
-    () => FavoriteDataSourceImpl(
+  getIt.registerLazySingleton<CryptocurrencyLocalDataSource>(
+      () => CryptocurrencyLocalDataSourceImpl(
+            cryptocurrencyBox: getIt<Box<CryptocurrencyModel>>(
+                instanceName: 'cryptocurrenciesBox'),
+          ));
+  getIt.registerLazySingleton<CryptocurrencyRemoteDataSource>(
+      () => CryptocurrencyRemoteDataSourceImpl(
+            apiService: getIt<ApiService>(),
+          ));
+  getIt.registerFactory<FavoriteLocalDataSource>(
+    () => FavoriteLocalDataSourceImpl(
         favoriteBox:
             getIt<Box<CryptocurrencyModel>>(instanceName: 'favoritesBox')),
   );
 
   // Register Repository
   getIt.registerFactory<FavoriteRepository>(
-    () => FavoriteRepositoryImpl(getIt<FavoriteDataSource>()),
+    () => FavoriteRepositoryImpl(getIt<FavoriteLocalDataSource>()),
   );
   getIt.registerLazySingleton<CryptocurrencyRepository>(
       () => CryptocurrencyRepositoryImpl(
-            getIt<CryptocurrencyDataSource>(),
+            localDataSource: getIt<CryptocurrencyLocalDataSource>(),
+            remoteDataSource: getIt<CryptocurrencyRemoteDataSource>(),
+            connectivityCheck: getIt<ConnectivityCheck>(),
           ));
 
   // Register Use Cases
