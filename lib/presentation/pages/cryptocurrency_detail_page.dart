@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_bloc.dart';
-import 'package:windmill_digital_poc/presentation/bloc/favorite_currency_event.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/manage_favorite_bloc.dart';
+import 'package:windmill_digital_poc/presentation/bloc/favorite/manage_favorite_event.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
 import 'package:windmill_digital_poc/presentation/widgets/details/cryptocurrency_app_bar.dart';
 import 'package:windmill_digital_poc/presentation/widgets/details/cryptocurrency_detail_body.dart';
@@ -29,8 +29,8 @@ class _CryptocurrencyDetailPageState extends State<CryptocurrencyDetailPage> {
       });
 
       if (cryptocurrency != null) {
-        final favoriteBloc = context.read<FavoriteCurrencyBloc>();
-        favoriteBloc.add(CheckFavorite(cryptocurrency!.id));
+        final manageFavoriteBloc = context.read<ManageFavoriteBloc>();
+        manageFavoriteBloc.add(LoadFavoriteStatus(currency: cryptocurrency!));
       }
     });
   }
