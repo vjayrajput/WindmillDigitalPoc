@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
+import 'package:windmill_digital_poc/presentation/widgets/action_button_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/text_label_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/title_label_widget.dart';
 
 class EmptyStateView extends StatelessWidget {
   final VoidCallback onRefresh;
@@ -12,21 +15,12 @@ class EmptyStateView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            Strings.oopsNoDataAvailable,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+          const TitleLabel(label: Strings.oopsNoDataAvailable),
           const SizedBox(height: 16),
-          const Text(
-            Strings.countNotFindCrypto,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
+          const TextLabel(
+              label: Strings.countNotFindCrypto, textAlign: TextAlign.center),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onRefresh,
-            child: const Text(Strings.refresh),
-          ),
+          ActionButton(label: Strings.refresh, onAction: onRefresh),
         ],
       ),
     );

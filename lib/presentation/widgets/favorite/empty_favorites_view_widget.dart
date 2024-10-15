@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
-import 'package:windmill_digital_poc/core/resources/styles.dart';
+import 'package:windmill_digital_poc/presentation/widgets/text_label_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/title_label_widget.dart';
 
 class EmptyFavoritesView extends StatelessWidget {
   const EmptyFavoritesView({super.key});
@@ -19,14 +20,10 @@ class EmptyFavoritesView extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(height: 20),
-            const Text(
-              Strings.noFavoritesYet,
-              style: AppTextStyles.titleStyle,
-            ),
+            const TitleLabel(label: Strings.noFavoritesYet),
             const SizedBox(height: 10),
-            const Text(
-              Strings.startAddingYourItemHere,
-              style: AppTextStyles.subtitleStyle,
+            const TextLabel(
+              label: Strings.startAddingYourItemHere,
               textAlign: TextAlign.center,
             ),
           ],

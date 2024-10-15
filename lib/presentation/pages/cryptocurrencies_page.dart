@@ -4,10 +4,9 @@ import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_bloc.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_event.dart';
 import 'package:windmill_digital_poc/presentation/bloc/cryptocurrency_state.dart';
-import 'package:windmill_digital_poc/presentation/widgets/crypto_list_view_widget.dart';
-import 'package:windmill_digital_poc/presentation/widgets/empty_crypto_view_widget.dart';
-import 'package:windmill_digital_poc/presentation/widgets/error_view_widget.dart';
-import 'package:windmill_digital_poc/presentation/widgets/loading_indicator_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/list/crypto_list_success_body.dart';
+import 'package:windmill_digital_poc/presentation/widgets/list/empty_crypto_view_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/list/error_view_widget.dart';
 
 class CryptocurrenciesPage extends StatefulWidget {
   const CryptocurrenciesPage({super.key});
@@ -48,46 +47,21 @@ class _CryptocurrenciesPageState extends State<CryptocurrenciesPage>
         if (state is CryptocurrencyLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is CryptocurrencyLoaded) {
-          return _buildLoadedView(state);
+          return CryptoListSuccessBody(
+            cryptocurrencies: state.cryptocurrencies,
+            scrollController: _scrollController,
+            isLoadingMore: state.isLoadingMore,
+            onRefresh: () => _loadCryptocurrencies(),
+          );
         } else if (state is CryptocurrencyError) {
-          return _buildErrorView(
-              "${Strings.failedToLoadCryptocurrencies} ${state.message}");
+          return ErrorView(
+            message: "${Strings.failedToLoadCryptocurrencies} ${state.message}",
+            onRetry: () => _loadCryptocurrencies(),
+          );
         } else {
-          return _buildEmptyView();
+          return EmptyStateView(onRefresh: () => _loadCryptocurrencies());
         }
       },
-    );
-  }
-
-  Widget _buildLoadedView(CryptocurrencyLoaded state) {
-    if (state.cryptocurrencies.isNotEmpty) {
-      return Stack(
-        children: [
-          RefreshIndicator(
-            onRefresh: () => _loadCryptocurrencies(),
-            child: CryptoListView(
-              cryptocurrencies: state.cryptocurrencies,
-              scrollController: _scrollController,
-            ),
-          ),
-          if (state.isLoadingMore) const LoadingIndicator(),
-        ],
-      );
-    } else {
-      return _buildEmptyView();
-    }
-  }
-
-  Widget _buildEmptyView() {
-    return EmptyStateView(
-      onRefresh: () => _loadCryptocurrencies(),
-    );
-  }
-
-  Widget _buildErrorView(String message) {
-    return ErrorView(
-      message: message,
-      onRetry: () => _loadCryptocurrencies(),
     );
   }
 
