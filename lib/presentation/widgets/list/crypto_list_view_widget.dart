@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:windmill_digital_poc/presentation/models/cryptocurrency_ui_model.dart';
-import 'package:windmill_digital_poc/presentation/widgets/crypto_list_tile_widget.dart';
+import 'package:windmill_digital_poc/presentation/widgets/list/crypto_list_tile_widget.dart';
 
 class CryptoListView extends StatelessWidget {
   final List<CryptocurrencyUiModel> cryptocurrencies;

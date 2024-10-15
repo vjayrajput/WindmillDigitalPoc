@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:windmill_digital_poc/core/resources/strings.dart';
 import 'package:windmill_digital_poc/presentation/pages/cryptocurrencies_page.dart';
 import 'package:windmill_digital_poc/presentation/pages/favorites_page.dart';
+import 'package:windmill_digital_poc/presentation/widgets/text_label_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(Strings.appTitle),
+          title: const TextLabel(label: Strings.appTitle),
           bottom: const TabBar(
             tabs: [
               Tab(
