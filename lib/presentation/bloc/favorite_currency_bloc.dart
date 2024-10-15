@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:windmill_digital_poc/core/errors/error_handler.dart';
 import 'package:windmill_digital_poc/domain/usecases/add_favorite_use_case.dart';
@@ -16,12 +18,21 @@ class FavoriteCurrencyBloc
   final RemoveFavoriteUseCase removeFavoriteUseCase;
   final CheckFavoriteUseCase checkFavoriteUseCase;
 
+  // Create a StreamController to listen for add/remove actions
+  final StreamController<void> _favoritesController =
+      StreamController.broadcast();
+
   FavoriteCurrencyBloc({
     required this.addFavoriteUseCase,
     required this.checkFavoriteUseCase,
     required this.loadFavoritesUseCase,
     required this.removeFavoriteUseCase,
   }) : super(FavoriteCurrencyInitial()) {
+    // Subscribe to stream and trigger LoadFavorites on change
+    _favoritesController.stream.listen((_) {
+      add(LoadFavorites()); // Automatically reload favorites
+    });
+
     on<LoadFavorites>((event, emit) async {
       emit(FavoriteCurrencyLoading());
       try {
@@ -45,7 +56,7 @@ class FavoriteCurrencyBloc
         await addFavoriteUseCase(
             CryptocurrencyUiMapper.toEntity(event.currency));
         emit(CurrencyIsFavorite());
-        add(LoadFavorites());
+        _favoritesController.add(null); // Notify stream that change occurred
       } catch (error) {
         print("favoriteBloc error 2 : ${error}");
         final errorMessage = ErrorHandler.handleHiveError(error);
@@ -59,7 +70,7 @@ class FavoriteCurrencyBloc
       try {
         await removeFavoriteUseCase(event.currencyId);
         emit(CurrencyIsNotFavorite());
-        add(LoadFavorites());
+        _favoritesController.add(null); // Notify stream that change occurred
       } catch (error) {
         print("favoriteBloc error 3 : ${error}");
         final errorMessage = ErrorHandler.handleHiveError(error);
@@ -85,5 +96,12 @@ class FavoriteCurrencyBloc
         emit(FavoriteCurrencyError(errorMessage));
       }
     });
+  }
+
+  // Dispose the StreamController when Bloc is closed
+  @override
+  Future<void> close() {
+    _favoritesController.close();
+    return super.close();
   }
 }
