@@ -7,24 +7,27 @@ import 'package:windmill_digital_poc/data/service/api_service.dart';
 class CryptocurrencyDataSourceImpl implements CryptocurrencyDataSource {
   final ApiService apiService;
   final Box<CryptocurrencyModel> cryptocurrencyBox;
+  final ConnectivityCheck connectivityCheck;
 
   CryptocurrencyDataSourceImpl(
-      {required this.apiService, required this.cryptocurrencyBox});
+      {required this.apiService,
+      required this.cryptocurrencyBox,
+      required this.connectivityCheck});
 
   @override
   Future<List<CryptocurrencyModel>> fetchCryptocurrencies(
       {required int start, required int limit}) async {
-    bool isOnline = await checkConnectivity();
+    bool isOnline = await connectivityCheck.checkConnectivity();
     if (isOnline) {
       final List<CryptocurrencyModel> cryptocurrencies =
           await apiService.fetchCryptocurrencies(start: start, limit: limit);
       return cryptocurrencies;
     } else {
-      return await _fetchCryptocurrenciesFromHive(start: start, limit: limit);
+      return await fetchCryptocurrenciesFromHive(start: start, limit: limit);
     }
   }
 
-  Future<List<CryptocurrencyModel>> _fetchCryptocurrenciesFromHive({
+  Future<List<CryptocurrencyModel>> fetchCryptocurrenciesFromHive({
     required int start,
     required int limit,
   }) async {

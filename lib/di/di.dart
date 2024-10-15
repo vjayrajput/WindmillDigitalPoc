@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:windmill_digital_poc/core/util/connectivity_check.dart';
 import 'package:windmill_digital_poc/data/datasource/cryptocurrency_data_source.dart';
 import 'package:windmill_digital_poc/data/datasource/cryptocurrency_data_source_impl.dart';
 import 'package:windmill_digital_poc/data/datasource/favorite_data_source.dart';
@@ -26,6 +29,14 @@ Future<void> setupDependencies() async {
   Hive.registerAdapter(CryptocurrencyModelAdapter());
   Hive.registerAdapter(PlatformModelAdapter());
 
+  getIt.registerSingleton<Dio>(
+    Dio(BaseOptions(baseUrl: dotenv.env['API_URL'] ?? '')),
+  );
+
+  getIt.registerSingleton<ConnectivityCheck>(
+    ConnectivityCheck(),
+  );
+
   // Register Hive Box
   getIt.registerSingletonAsync<Box<CryptocurrencyModel>>(
     () async => await Hive.openBox<CryptocurrencyModel>('favorites'),
@@ -39,16 +50,17 @@ Future<void> setupDependencies() async {
   await getIt.allReady();
 
   // Register Api Service
-  getIt.registerLazySingleton<ApiService>(
-    () => ApiService(
+  getIt.registerLazySingleton<ApiService>(() => ApiService(
+        dio: getIt<Dio>(),
         cryptocurrencyBox: getIt<Box<CryptocurrencyModel>>(
-            instanceName: 'cryptocurrenciesBox')),
-  );
+            instanceName: 'cryptocurrenciesBox'),
+      ));
 
   // Register Data Source
   getIt.registerLazySingleton<CryptocurrencyDataSource>(() =>
       CryptocurrencyDataSourceImpl(
           apiService: getIt<ApiService>(),
+          connectivityCheck: getIt<ConnectivityCheck>(),
           cryptocurrencyBox: getIt<Box<CryptocurrencyModel>>(
               instanceName: 'cryptocurrenciesBox')));
   getIt.registerFactory<FavoriteDataSource>(

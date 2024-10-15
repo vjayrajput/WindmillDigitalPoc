@@ -1,31 +1,21 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:http/http.dart' as http;
 
-Future<bool> hasInternetAccess() async {
-  try {
-    final response = await http
-        .get(Uri.parse('https://www.google.com'))
-        .timeout(const Duration(seconds: 5));
-    return response.statusCode == 200;
-  } catch (e) {
-    return false;
-  }
-}
+class ConnectivityCheck {
+  Future<bool> checkConnectivity() async {
+    final List<ConnectivityResult> results =
+        await (Connectivity().checkConnectivity());
 
-Future<bool> checkConnectivity() async {
-  var connectivityResult = await (Connectivity().checkConnectivity());
-
-  if (connectivityResult == ConnectivityResult.none) {
-    print('No Network Connection');
-    return false;
-  } else {
-    // Check if there's actual internet access
-    bool internetWorking = await hasInternetAccess();
-    if (internetWorking) {
-      print('Connected to the Internet');
+    if (results.contains(ConnectivityResult.wifi)) {
+      print("You are now connected to wifi");
+      return true;
+    } else if (results.contains(ConnectivityResult.mobile)) {
+      print("You are now connected to mobile data");
+      return true;
+    } else if (results.contains(ConnectivityResult.vpn)) {
+      print("You are now connected to vpn");
       return true;
     } else {
-      print('Connected to Network but No Internet');
+      print("No connection available");
       return false;
     }
   }
