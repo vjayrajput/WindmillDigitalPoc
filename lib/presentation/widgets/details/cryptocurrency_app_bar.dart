@@ -49,27 +49,6 @@ class CryptocurrencyAppBar extends StatelessWidget
         ),
       ],
     );
-
-    /* return AppBar(
-      title: Text(cryptocurrency.name),
-      actions: [
-        BlocBuilder<FavoriteCurrencyBloc, FavoriteCurrencyState>(
-          builder: (context, state) {
-            bool isFavorite = false;
-            if (state is CurrencyIsFavorite) {
-              isFavorite = true;
-            } else if (state is CurrencyIsNotFavorite) {
-              isFavorite = false;
-            }
-
-            return FavoriteButton(
-              initialIsFavorite: isFavorite,
-              cryptocurrency: cryptocurrency,
-            );
-          },
-        ),
-      ],
-    );*/
   }
 
   @override
