@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
@@ -33,12 +34,16 @@ Future<void> setupDependencies() async {
   Hive.registerAdapter(CryptocurrencyModelAdapter());
   Hive.registerAdapter(PlatformModelAdapter());
 
+  getIt.registerLazySingleton<Connectivity>(() => Connectivity());
+
   getIt.registerSingleton<Dio>(
     Dio(BaseOptions(baseUrl: dotenv.env['API_URL'] ?? '')),
   );
 
   getIt.registerSingleton<ConnectivityCheck>(
-    ConnectivityCheck(),
+    ConnectivityCheck(
+      connectivity: getIt<Connectivity>(),
+    ),
   );
 
   // Register Hive Box
