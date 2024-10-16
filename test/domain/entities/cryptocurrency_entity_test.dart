@@ -41,7 +41,7 @@ void main() {
         () {
       const crypto1 = testCryptocurrencyEntity1;
 
-      const crypto2 = testCryptocurrencyEntity1;
+      const crypto2 = testCryptocurrencyEntity2;
 
       expect(crypto1, isNot(crypto2));
     });
