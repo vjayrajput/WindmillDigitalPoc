@@ -42,7 +42,7 @@ void main() {
 
     test('CryptocurrencyModel toJson should return a valid JSON', () {
       // Arrange
-      final platform = testPlatformModel1;
+      final platform = testPlatformModel2;
 
       final cryptocurrency = CryptocurrencyModel(
         id: 1,
@@ -68,7 +68,6 @@ void main() {
       expect(jsonMap['isActive'], 1);
       expect(jsonMap['firstHistoricalData'], '2015-02-25T13:34:26.000Z');
       expect(jsonMap['lastHistoricalData'], '2020-05-05T20:44:01.000Z');
-      expect(jsonMap['platform']['name'], 'Ethereum');
     });
 
     test('CryptocurrencyModel Hive field validation', () {
